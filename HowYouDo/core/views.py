@@ -18,10 +18,10 @@ def signup(request):
         password2 = request.POST['password2']
         if password == password2: # checks the password and confirm passwords are the same
             if User.objects.filter(email = email).exists(): # checks there is an email like we enter in db 
-                messages.info(request, 'E-mail has already been used!')
+                messages.error(request, 'E-mail has already been used!')
                 return redirect('signup')
             elif User.objects.filter(username = username).exists(): # checks there is an username like we enter in db
-                messages.info(request, 'Username has already been used!')
+                messages.error(request, 'Username has already been used!')
                 return redirect('signup')
             else:
                 user = User.objects.create_user(username=username, email=email, password=password)
@@ -35,7 +35,7 @@ def signup(request):
                 new_profile.save()
                 return redirect('signin')
         else:
-            messages.info(request, 'Password not matching!!!')
+            messages.error(request, 'Password not matching!!!')
             return redirect('/signup')
     else:
         return render(request, 'signup.html')
@@ -48,7 +48,7 @@ def signin(request):
         user = auth.authenticate(username=username, password=password)
         
         if user is None:  # checks is there exist a user with entered information
-            messages.info(request, 'Incorrect username or password!!!')
+            messages.error(request, 'Incorrect username or password!!!')
             return redirect('signin')
         else:
             auth.login(request, user)

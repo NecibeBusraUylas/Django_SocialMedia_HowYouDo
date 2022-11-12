@@ -6,6 +6,9 @@ __pycache__
 HowYouDo/settings.py
 media
 static
+node_modules
+package-lock.json
+package.json
 
 # Backup files # 
 *.bak 

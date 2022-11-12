@@ -14,6 +14,8 @@
     <link rel="stylesheet" href="{% static 'assets/css/uikit.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/style.css' %}">
     <link rel="stylesheet" href="{% static 'assets/css/tailwind.css' %}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
     <div id="wrapper" class="flex flex-col justify-between h-screen">
@@ -25,7 +27,7 @@
                        <b><h1 style="font-size: 1.5rem;">How You Do</h1></b>
                     </a>
                     <div class="capitalize flex font-semibold hidden lg:block my-2 space-x-3 text-center text-sm">                     
-                        <a href="/signup" class="bg-header-button font-semibold px-6 py-3 rounded-full shadow text-blue">Sign Up</a>
+                        <a href="/signup" class="bg-header-button font-semibold px-6 py-3 rounded-full shadow">Sign Up</a>
                     </div>
 
                 </div>
@@ -34,24 +36,27 @@
         <!-- Content-->
         <div>
             <div class="lg:p-12 max-w-md max-w-xl lg:my-0 my-12 mx-auto p-6 space-y-">
-                <h2 class="lg:text-3xl text-xl font-semibold mb-6 text-pink">Sign In</h2>
                 <div>
                     <!-- <style>
-                        h5 {
-                            color: red;
-                        }
-                    </style>
+                                        h5 {
+                                            color: red;
+                                        }
+                                    </style>
+                                    {% for message in messages %}
+                                    <h5>{{message}}</h5>
+                                    {% endfor %} -->
                     {% for message in messages %}
-                    <h5>{{message}}</h5>
-                    {% endfor %} -->
-                    {% if messages %}
-                    <ul>
-                        {% for message in messages %}
-                        <li>{% if message.tags %} class="{{ message.tags }}" {% endif %}>{{ message }}</li>
-                            {% endfor %}
-                    </ul>
-                    {% endif %}
+                    <div class="container-fluid p-0">
+                        <div class="alert {{ message.tags }} alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                <span aria-hidden="true"></span>
+                            </button>
+                            {{ message }}
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
+                <h2 class="lg:text-3xl text-xl font-semibold mb-6 text-pink">Sign In</h2>
                 <form action="" method="POST">
                     {% csrf_token %}
                     <input type="text" name="username" placeholder="Username" class="bg-gray-200 mb-2 shadow-none dark:bg-gray-800" style="border: 1px solid #d3d5d8 !important;">
@@ -126,5 +131,8 @@
     <script src="{% static 'assets/js/uikit.js' %}"></script>
     <script src="{% static 'assets/js/simplebar.js' %}"></script>
     <script src="{% static 'assets/js/custom.js' %}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+        crossorigin="anonymous"></script>
 </body>
 </html>
