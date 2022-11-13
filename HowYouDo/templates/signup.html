@@ -7,7 +7,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="{% static 'assets/images/favicon.png' %}" rel="icon" type="image/png">
-    <title>Sign Up - How You Do</title>
+    <title>How You Do-Sign Up</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="{% static 'assets/css/icons.css' %}">
@@ -18,14 +18,14 @@
         integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 </head>
 <body>
-    {% endif %}
     <div id="wrapper" class="flex flex-col justify-between h-screen">
         <!-- header-->
         <div class="bg-home-header py-4 shadow dark:bg-gray-800">
             <div class="max-w-6xl mx-auto">
                 <div class="flex items-center lg:justify-between justify-around">
-                    <a href="trending.html">
-                        <b><h1 style="font-size: 1.5rem;">How You Do</h1></b>
+                    <img src="{% static 'images\logo2.png' %}" width="50" height="50">
+                    <a href="/">
+                        <h1 style="font-size: 1.5rem;">How You Do</h1>
                     </a>
                     <div class="capitalize flex font-semibold hidden lg:block my-2 space-x-3 text-center text-sm">
                         <a href="/signin" class="bg-header-button font-semibold px-6 py-3 rounded-full shadow">Sign in</a>
@@ -60,10 +60,10 @@
                 <!--<p class="mb-2 text-black text-lg"> Register to manage your account </p>-->
                 <form action="" method="POST">
                     {% csrf_token %}
-                    <!--<div class="flex lg:flex-row flex-col lg:space-x-2">
-                        <input type="text" placeholder="First Name"  class="bg-gray-200 mb-2 shadow-none  dark:bg-gray-800" style="border: 1px solid #d3d5d8 !important;">
-                        <input type="text" placeholder="Last Name" class="bg-gray-200 mb-2 shadow-none  dark:bg-gray-800" style="border: 1px solid #d3d5d8 !important;">
-                    </div>-->
+                    <div class="flex lg:flex-row flex-col lg:space-x-2">
+                        <input type="text" name="firstname" placeholder="First Name"  class="bg-gray-200 mb-2 shadow-none  dark:bg-gray-800" style="border: 1px solid #d3d5d8 !important;">
+                        <input type="text"  name="lastname" placeholder="Last Name" class="bg-gray-200 mb-2 shadow-none  dark:bg-gray-800" style="border: 1px solid #d3d5d8 !important;">
+                    </div>
                     <input type="text" name="username" placeholder="Username" class="bg-gray-200 mb-2 shadow-none  dark:bg-gray-800" style="border: 1px solid #d3d5d8 !important;">
                     <input type="email" name="email" placeholder="Email" class="bg-gray-200 mb-2 shadow-none  dark:bg-gray-800" style="border: 1px solid #d3d5d8 !important;">
                     <input type="password" name="password" placeholder="Password" class="bg-gray-200 mb-2 shadow-none  dark:bg-gray-800" style="border: 1px solid #d3d5d8 !important;">

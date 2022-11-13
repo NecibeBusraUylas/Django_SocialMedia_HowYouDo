@@ -10,6 +10,9 @@ node_modules
 package-lock.json
 package.json
 
+# exception to the rule
+#!somefolder/.gitkeep 
+
 # Backup files # 
 *.bak 
 
