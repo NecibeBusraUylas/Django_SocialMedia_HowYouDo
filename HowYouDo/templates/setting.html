@@ -32,8 +32,8 @@
                 </div>
             </div>
             <div class="right-side lg:pr-4">
-                <!-- Notification -->
-                <a href="#" class="header-links-item">
+                <!-- Notification
+                     <a href="#" class="header-links-item">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                         aria-hidden="true" role="img" width="1em" height="1em" preserveAspectRatio="xMidYMid meet"
                         viewBox="0 0 24 24">
@@ -63,9 +63,9 @@
                         </li>
                     </ul>
                     <a href="#" class="see-all">See all</a>
-                </div>
-                <!-- Messages -->
-                <a href="#" class="header-links-item">
+                </div> -->
+                <!-- Messages 
+                    <a href="#" class="header-links-item">
                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
                         aria-hidden="true" role="img" width="0.5em" height="0.5em" preserveAspectRatio="xMidYMid meet"
                         viewBox="0 0 16 16">
@@ -92,10 +92,10 @@
                         </li>
                     </ul>
                     <a href="#" class="see-all">See all</a>
-                </div>
+                </div> -->
                 <!-- profile -->
                 <a href="#">
-                    <img src="{% static 'assets/images/avatars/avatar-2.jpg' %}" class="header-avatar" alt="">
+                    <img src="{{user_profile.profileImage.url}}" class="header-avatar" alt="">
                 </a>
                 <div uk-drop="mode: click;offset:9" class="header_dropdown profile_dropdown border-t">
                     <ul>
@@ -133,7 +133,7 @@
                         </div>
                     </div>
                     <div class="bg-gray-10 p-6 pt-0 flex justify-end space-x-3">
-                        <a href="/" class="button text-white  px-6 py-3 rounded-full shadow hover:text-white">Cancel</a>
+                        <a href="/" class="bg-header-button px-6 py-3 font-semibold rounded-md shadow text-red-500">Cancel</a>
                         <button type="submit" class="button bg-blue-700"> Save </button>
                     </div>
                 </form>
