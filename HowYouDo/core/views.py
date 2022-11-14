@@ -2,16 +2,20 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, auth
 from django.shortcuts import redirect, render
-from django.http import HttpResponse
-from .models import Profile,Post
+from .models import Profile,Post, LikePost
 
 
 # Create your views here.
 @login_required(login_url='signin')
 def index(request):
+    # to get and show the profile image of the user
     user_object= User.objects.get(username=request.user.username) # get the object of currently log in user 
     user_profile = Profile.objects.get(user=user_object) # use object of the user to get profile information
-    return render(request, 'index.html', {'user_profile': user_profile})
+    
+    # to get and show the feed of the user
+    feed_posts_lists = Post.objects.all()
+    
+    return render(request, 'index.html', {'user_profile': user_profile, 'feed_posts_lists': feed_posts_lists})
 
 def signup(request):
     if request.method == "POST":
@@ -94,7 +98,6 @@ def settings(request):
         return redirect('settings')
     return render(request, 'setting.html', {'user_profile': user_profile}) # pass the profile object to settings page
 
-
 @login_required(login_url='signin')
 def upload(request):
     if request.method == 'POST':
@@ -107,4 +110,24 @@ def upload(request):
         return redirect('/')
     else:
         return redirect('/')
-        
+
+@login_required(login_url='signin')
+def like_post(request):
+    username = request.user.username # to get username of currently log in user
+    post_id = request.GET.get('post_id') # get the unique id of the post
+
+    post = Post.objects.get(id=post_id) # get the informations of post using post's unique id
+
+    like_filter = LikePost.objects.filter(post_id=post_id, username=username).first() # get if there is any data in db that matches the username and post
+
+    if like_filter == None: # if user didn't like the post before user will like the post
+        new_like = LikePost.objects.create(post_id=post_id, username=username)
+        new_like.save()
+        post.number_of_likes = post.number_of_likes + 1
+        post.save()
+        return redirect('/')
+    else:  # if user did like the post before user will dislike the post
+        like_filter.delete()
+        post.number_of_likes = post.number_of_likes - 1
+        post.save()
+        return redirect('/')

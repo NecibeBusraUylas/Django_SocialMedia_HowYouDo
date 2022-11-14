@@ -24,7 +24,13 @@ class Post(models.Model):
     caption = models.TextField()
     created_at = models.DateTimeField(default=datetime.now)
     number_of_likes = models.IntegerField(default=0)
-    number_of_dislikes = models.IntegerField(default=0)
     
     def __str__(self):
         return self.user # it's not contain foreign key so no object that has been passed in this class
+
+class LikePost(models.Model):
+    post_id = models.CharField(max_length=500)
+    username = models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.username
