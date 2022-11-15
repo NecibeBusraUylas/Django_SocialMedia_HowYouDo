@@ -8,5 +8,7 @@ urlpatterns = [
     path('logout', views.logout, name='logout'),  # sign in page
     path('settings', views.settings, name='settings'),  # profile settings page
     path('upload', views.upload, name='upload'),  # post upload page
-    path('like-post', views.like_post, name='like-post')  
+    path('like-post', views.like_post, name='like-post'),
+    path('profile/<str:pk>', views.profile, name='profile'), # user's profile page (url will be like /profile/username)
+    path('follow', views.follow, name='follow'),
 ]

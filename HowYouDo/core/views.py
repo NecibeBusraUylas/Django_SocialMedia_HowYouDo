@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, auth
 from django.shortcuts import redirect, render
-from .models import Profile,Post, LikePost
+from .models import Profile, Post, LikePost, FollowersCount
 
 
 # Create your views here.
@@ -130,4 +130,58 @@ def like_post(request):
         like_filter.delete()
         post.number_of_likes = post.number_of_likes - 1
         post.save()
+        return redirect('/')
+
+@login_required(login_url='signin')
+def profile(request, pk): # pk is the username of currently log in user
+    # current user's informations
+    current_user = User.objects.get(username=request.user.username)
+    current_user_profile = Profile.objects.get(user=current_user)
+    
+    # to show the profile of user get all of the details of user 
+    user_object = User.objects.get(username=pk)
+    user_profile = Profile.objects.get(user=user_object)
+    user_posts = Post.objects.filter(user=pk)
+    user_post_number = len(user_posts)
+
+    follower = request.user.username
+    user = pk
+
+    if FollowersCount.objects.filter(follower=follower, user=user).first():
+        button_text = 'Unfollow'
+    else:
+        button_text = 'Follow'
+
+    user_followers = len(FollowersCount.objects.filter(user=pk))
+    user_following = len(FollowersCount.objects.filter(follower=pk))
+
+    context = {
+        'current_user': current_user,
+        'current_user_profile': current_user_profile,
+        'user_object': user_object,
+        'user_profile': user_profile,
+        'user_posts': user_posts,
+        'user_post_number': user_post_number,
+        'button_text': button_text,
+        'user_followers': user_followers,
+        'user_following': user_following,
+    }
+    return render(request, 'profile.html', context)
+
+@login_required(login_url='signin')
+def follow(request):
+    if request.method == 'POST':
+        follower = request.POST['follower']
+        user = request.POST['user']
+        
+        # if there is any data in db that matches the follower and user then follower stop follow the user 
+        if FollowersCount.objects.filter(follower=follower, user=user).first():
+            delete_follower = FollowersCount.objects.get(follower=follower, user=user)
+            delete_follower.delete()
+            return redirect('/profile/'+user)
+        else:  # if none of the data in db matches with the follower and user then follower will follow the user
+            new_follower = FollowersCount.objects.create(follower=follower, user=user)
+            new_follower.save()
+            return redirect('/profile/'+user)
+    else:
         return redirect('/')

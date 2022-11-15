@@ -138,6 +138,7 @@
                 </a>
                 <div uk-drop="mode: click;offset:9" class="header_dropdown profile_dropdown border-t">
                     <ul>
+                        <li><a href="/profile/{{ user_profile.user}}"> My Profile Page </a> </li>
                         <li><a href="settings"> Profile Settings </a> </li>
                         <li><a href="logout"> Log Out</a></li>
                     </ul>
@@ -162,7 +163,7 @@
                                         class="bg-gray-200 border border-white rounded-full w-8 h-8">
                                 </div>
                             </a> -->
-                            <span class="block capitalize font-semibold "> <a href="#">@{{feed_posts_list.user}}</a> </span>
+                            <span class="block capitalize font-semibold "> <a href="/profile/{{ feed_posts_list.user}}">@{{feed_posts_list.user}}</a> </span>
                         </div>
                         <div>
                             <a href="#"> <i
