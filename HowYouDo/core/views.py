@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, auth
 from django.shortcuts import redirect, render
 from .models import Profile, Post, LikePost, FollowersCount
-
+from itertools import chain
 
 # Create your views here.
 @login_required(login_url='signin')
@@ -12,10 +12,20 @@ def index(request):
     user_object= User.objects.get(username=request.user.username) # get the object of currently log in user 
     user_profile = Profile.objects.get(user=user_object) # use object of the user to get profile information
     
-    # to get and show the feed of the user
+    # to get and show all of the posts in the db
     feed_posts_lists = Post.objects.all()
     
-    return render(request, 'index.html', {'user_profile': user_profile, 'feed_posts_lists': feed_posts_lists})
+    # to get only the followed user's post
+    user_following_list = [] # contain all the users that logged in user followed
+    feed = [] # query the db to get only the posts of followed users this give a query set so convert to a list
+    user_following = FollowersCount.objects.filter(follower = request.user.username) # to get objects of followed user by logged in user 
+    for users in user_following:
+        user_following_list.append(users.user) # append the following list with username of followed users
+    for username in user_following_list: # get the posts of followed users
+        feed_lists = Post.objects.filter(user=username)
+        feed.append(feed_lists) # this is a query set convert it to list
+    feed_list = list(chain(*feed))
+    return render(request, 'index.html', {'user_profile': user_profile, 'feed_posts_lists': feed_list})
 
 def signup(request):
     if request.method == "POST":
@@ -185,3 +195,25 @@ def follow(request):
             return redirect('/profile/'+user)
     else:
         return redirect('/')
+
+@login_required(login_url='signin')
+def search(request):
+    user_object = User.objects.get(username=request.user.username)
+    user_profile = Profile.objects.get(user=user_object) # to display logged in users informations(profile image etc.)
+
+    if request.method == 'POST':
+        username = request.POST['username']
+        username_object = User.objects.filter(username__icontains=username) # get the all user objects that matches with the search area 
+
+        username_profile = []
+        username_profile_list = []
+
+        for users in username_object:
+            username_profile.append(users.id) # get the ids of matching usernames
+
+        for ids in username_profile:  # get the profiles of searched users this is a query set
+            profile_lists = Profile.objects.filter(id_user=ids) 
+            username_profile_list.append(profile_lists) 
+        
+        username_profile_list = list(chain(*username_profile_list)) # convert query set to list
+    return render(request, 'search.html', {'username':username, 'user_profile': user_profile, 'username_profile_list': username_profile_list})

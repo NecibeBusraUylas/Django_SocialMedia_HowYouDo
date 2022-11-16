@@ -9,7 +9,7 @@
 	<meta name="description" content="" />
 	<meta name="keywords" content="" />
 	<link href="{% static 'assets/images/favicon.png' %}" rel="icon" type="image/png">
-	<title>Profile - {{user_profile.user.username}}</title>
+	<title>How You Do-Profile-{{user_profile.user.username}}</title>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="{% static 'css/main.min.css' %}">
@@ -103,7 +103,18 @@
 			{% endfor %}
 		</ul>
 	</div>
+	<!-- Footer -->
+	<div class="lg:mb-5 py-3 uk-link-reset">
+		<div class="flex flex-col items-center justify-between lg:flex-row max-w-6xl mx-auto lg:space-y-0 space-y-3">
+			<div class="flex space-x-2 text-gray-700 uppercase">
+				<p>
+					© 2022 How You Do | Design by
+					<a href="https://www.linkedin.com/in/necibebusrauylas/" target="_blank">Necibe Büşra Uylaş</a>
+				</p>
+			</div>
+		</div>
 	</div>
+
 	<script data-cfasync="false"
 		src="{% static '../../cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js' %}"></script>
 	<script src="{% static 'js/main.min.js' %}"></script>
