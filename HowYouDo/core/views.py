@@ -4,6 +4,7 @@ from django.contrib.auth.models import User, auth
 from django.shortcuts import redirect, render
 from .models import Profile, Post, LikePost, FollowersCount
 from itertools import chain
+import random
 
 # Create your views here.
 @login_required(login_url='signin')
@@ -25,7 +26,28 @@ def index(request):
         feed_lists = Post.objects.filter(user=username)
         feed.append(feed_lists) # this is a query set convert it to list
     feed_list = list(chain(*feed))
-    return render(request, 'index.html', {'user_profile': user_profile, 'feed_posts_lists': feed_list})
+    
+    # user suggestion
+    all_users = User.objects.all()
+    user_following_all = []
+    for user in user_following:
+        user_list = User.objects.get(username=user.user)
+        user_following_all.append(user_list) # store all the users information followed by logged in user
+    new_suggestions_list = [x for x in list(all_users) 
+                            if (x not in list(user_following_all))] # store users that are not followed by logged in user including the logging user
+    current_user = User.objects.filter(username=request.user.username) # getting the current user info to remove from new suggestions lists
+    final_suggestions_list = [x for x in list(new_suggestions_list) 
+                              if (x not in list(current_user))]  # store users that are not followed by logged in user
+    random.shuffle(final_suggestions_list)
+    username_profile = []
+    username_profile_list = []
+    for users in final_suggestions_list:
+        username_profile.append(users.id)  # get the ids of unfollowed users to get profile informations
+    for ids in username_profile:
+        profile_lists = Profile.objects.filter(id_user=ids)
+        username_profile_list.append(profile_lists) # store the profile informations of unfollowed users it's a query set convert it to list
+    suggestions_username_profile_list = list(chain(*username_profile_list)) 
+    return render(request, 'index.html', {'user_profile': user_profile, 'feed_posts_lists': feed_list, 'suggestions_username_profile_list': suggestions_username_profile_list[:4]}) # only take the first 4 elements of suggestions_username_profile_list to show in page
 
 def signup(request):
     if request.method == "POST":
