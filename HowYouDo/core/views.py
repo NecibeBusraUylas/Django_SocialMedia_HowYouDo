@@ -57,29 +57,31 @@ def signup(request):
         email = request.POST['email']
         password = request.POST['password']
         password2 = request.POST['password2']
-        if password == password2: # checks the password and confirm passwords are the same
-            if User.objects.filter(email = email).exists(): # checks there is an email like we enter in db 
-                messages.error(request, 'E-mail has already been used!')
-                return redirect('signup')
-            elif User.objects.filter(username = username).exists(): # checks there is an username like we enter in db
-                messages.error(request, 'Username has already been used!')
-                return redirect('signup')
-            else:
-                user = User.objects.create_user(username=username, email=email, password=password)
-                user.first_name = firstname
-                user.last_name = lastname
-                user.save()
-                # log user in and redirect to setting page
-                user_login = auth.authenticate(username=username, password=password)
-                auth.login(request, user_login)
-                # create a profile object for the new user
-                user = User.objects.get(username=username)
-                new_profile = Profile.objects.create(user=user,id_user=user.id)
-                new_profile.save()
-                return redirect('settings')
-        else:
-            messages.error(request, 'Password not matching!!!')
+        if email.find("@") == -1:
+            messages.error(request, 'E-mail must contains @ and .')
+            return redirect('signup')
+        elif User.objects.filter(email = email).exists(): # checks there is an email like we enter in db 
+            messages.error(request, 'E-mail has already been used!')
+            return redirect('signup')
+        elif User.objects.filter(username = username).exists(): # checks there is an username like we enter in db
+            messages.error(request, 'Username has already been used!')
+            return redirect('signup')
+        elif password != password2:
+            messages.error(request, 'Passwords not matching!!!')
             return redirect('/signup')
+        else:
+            user = User.objects.create_user(username=username, email=email, password=password)
+            user.first_name = firstname
+            user.last_name = lastname
+            user.save()
+            # log user in and redirect to setting page
+            user_login = auth.authenticate(username=username, password=password)
+            auth.login(request, user_login)
+            # create a profile object for the new user
+            user = User.objects.get(username=username)
+            new_profile = Profile.objects.create(user=user,id_user=user.id)
+            new_profile.save()
+            return redirect('settings')
     else:
         return render(request, 'signup.html')
     
