@@ -57,8 +57,17 @@ def signup(request):
         email = request.POST['email']
         password = request.POST['password']
         password2 = request.POST['password2']
-        if email.find("@") == -1:
-            messages.error(request, 'E-mail must contains @ and .')
+        if len(password) < 6:  # check if lenght of password is smaller than 6, it is an invalid password
+            messages.error(request, 'Password must have at least 6 characters.')
+            return redirect('signup')
+        elif not any(characters.isdigit() for characters in password): # check if there are at least one numeric character in the given password
+            messages.error(request, 'Password must have at least one numeric character.')
+            return redirect('signup')
+        elif not any(characters.isupper() for characters in password): # check if there are at least one numeric character in the given password
+            messages.error(request, 'Password must have at least one uppercase character')
+            return redirect('signup')
+        elif not any(characters.islower() for characters in password): # check if there are at least one lowercase character in the given password
+            messages.error(request, 'Password must have at least one lowercase character')
             return redirect('signup')
         elif User.objects.filter(email = email).exists(): # checks there is an email like we enter in db 
             messages.error(request, 'E-mail has already been used!')
